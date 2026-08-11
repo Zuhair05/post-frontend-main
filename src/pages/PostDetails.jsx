@@ -62,7 +62,11 @@ const PostDetails = (props) => {
             {props.user && props.user._id === post.author?._id && (
                 <button onClick={() => props.handleDelete(post._id)}>Delete</button>
             )}
-           
+            {post.author._id === props.user._id && (
+                 <div className="actions">
+                    <button onClick={() => navigate(`/posts/${post._id}/edit`)}>Edit</button>
+                </div>
+            )}
 
             <footer className="hoot-footer">
                 {/* comments go here */}

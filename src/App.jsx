@@ -10,6 +10,7 @@ import PostList from "./pages/PostList"
 import * as postServices from './services/posts'
 import PostDetails from "./pages/PostDetails"
 import PostForm from "./pages/PostForm"
+import { useParams } from "react-router"
 
 
 const getUserFromToken = () => {
@@ -20,6 +21,7 @@ const getUserFromToken = () => {
 
 const App = () => {
   const navigate = useNavigate()
+  const { postId } = useParams()
 
   const [user, setUser] = useState(getUserFromToken())
   const [posts, setPosts] = useState([])
@@ -45,21 +47,16 @@ const App = () => {
     navigate('/posts')
   }
 
-  // const handleUpdate = async (postId, formData) => {
-  //   const updatedPost = await postServices.update(postId, formData)
-  //   setPosts(posts.map((post) => (post._id === postId ? updatedPost : post)))
-  //   navigate(`/posts/${postId}`)
-  // }
+const handleUpdatePost = async (postId, formData) => {
+    const updatedPost = await postServices.update(postId, formData)
 
-  // const openComments = async (postId) => {
-  //   setSelectedPostId(postId)
-  //   setShowComments(true)
-  // }
+    const updatedPostList = posts.map((post) => {
+      return post._id === postId ? updatedPost : post
+    })
 
-  // const closeComments = () => {
-  //   setSelectedPostId(null)
-  //   setShowComments(false)
-  // }
+    setPosts(updatedPostList)
+    navigate(`/posts/${postId}`)
+  }
 
 
   return (
@@ -73,6 +70,7 @@ const App = () => {
             <Route path='/posts' element={<PostList posts={posts} />} />
             <Route path='/posts/:postId' element={<PostDetails user={user} handleDelete={handleDelete} />} />
             <Route path='/posts/new' element={<PostForm handleAddPost={handleAddPost} />} />
+            <Route path='/posts/:postId/edit' element={<PostForm handleUpdatePost={handleUpdatePost} />} />
           </>
         ) : (
           <>
