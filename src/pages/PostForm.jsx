@@ -18,7 +18,7 @@ const PostForm = (props) => {
 
   const handleSubmit = (evt) => {
         evt.preventDefault()
-        props.handleAddHoot(formData)
+        props.handleAddPost(formData)
         setFormData(initialState)
         navigate('/posts')
   }
@@ -45,7 +45,7 @@ const PostForm = (props) => {
           value={formData.text}
           onChange={handleChange}
         />
-        <lable htmlFor='image-input'>Image</lable>
+        <label htmlFor='image-input'>Image</label>
         <input
         id="image"
           name='image'

@@ -8,6 +8,7 @@ const SignUpForm = (props) => {
 
     const initialState = {
         username: '',
+        email: '',
         password: '',
         confirmPassword: '',
     }
@@ -45,6 +46,8 @@ const SignUpForm = (props) => {
             <form onSubmit={handleSubmit}>
                 Username:
                 <input type="text" name="username" onChange={handleChange} value={formData.username} required />
+                Email:
+                <input type="email" name="email" onChange={handleChange} value={formData.email} required />
                 Password:
                 <input type="password" name="password" onChange={handleChange} value={formData.password} required />
                 Confirm Password:

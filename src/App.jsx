@@ -22,20 +22,20 @@ const App = () => {
   const navigate = useNavigate()
 
   const [user, setUser] = useState(getUserFromToken())
-  const [hoots, setHoots] = useState([])
+  const [posts, setPosts] = useState([])
 
   useEffect(() => {
-    const fetchAllHoots = async () => {
-      const hootsData = await hootService.index()
-      setHoots(hootsData)
+    const fetchAllPosts = async () => {
+      const postsData = await hootService.index()
+      setPosts(postsData)
     }
-    if (user) fetchAllHoots()
+    if (user) fetchAllPosts()
   }, [user])
 
-  const handleAddHoot = async (formData) => {
-    const newHoot = await hootService.create(formData)
-    setHoots([newHoot, ...hoots])
-    navigate('/hoots')
+  const handleAddPost = async (formData) => {
+    const newPost = await hootService.create(formData)
+    setPosts([newPost, ...posts])
+    navigate('/posts')
   }
   
   return (
@@ -46,9 +46,9 @@ const App = () => {
         <Route path='/' element={user ? <Dashboard user={user} /> : <Landing />} />
         {user ? (
           <>
-            <Route path='/posts' element={<HootList hoots={hoots} />} />
+            <Route path='/posts' element={<HootList posts={posts} />} />
             <Route path='/posts/:postId' element={<HootDetails user={user} />} />
-            <Route path='/posts/new' element={<HootForm handleAddHoot={handleAddHoot} />} />
+            <Route path='/posts/new' element={<HootForm handleAddPost={handleAddPost} />} />
           </>
         ) : (
           <>

@@ -3,11 +3,13 @@ import { Link } from "react-router"
 const PostList = (props) => {
   return (
     <main className="post-list">
-      {props.hoots.map((post) => (
+      {props.posts.map((post) => (
         <Link key={post._id} to={`/posts/${post._id}`}>
             <article className="card">
                 <header>
-                  <span>{post.image}</span>
+                  <span>{post.image && (
+                    <img src={post.image} alt={post.title}/>
+                  )}</span>
                     <h2 key={post._id}>{post.title}</h2> 
                     <p className="post-author">Posted by {post.author?.username || 'Unknown user'}</p>
                 </header>
@@ -15,9 +17,6 @@ const PostList = (props) => {
                 <footer className="post-footer">
                 <span>
                     {new Date(post.createdAt).toLocaleDateString()}
-                </span>
-                <span>
-                    {post.comments?.length || 0} comments
                 </span>
                 </footer>
             </article>

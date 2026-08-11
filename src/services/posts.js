@@ -1,4 +1,4 @@
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/hoots`
+const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/posts`
 
 const index = async () => {
   try {
@@ -11,9 +11,9 @@ const index = async () => {
   }
 }
 
-const show = async (hootId) => {
+const show = async (postId) => {
   try {
-    const res = await fetch(`${BASE_URL}/${hootId}`, {
+    const res = await fetch(`${BASE_URL}/${postId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     })
     return res.json()
@@ -22,7 +22,7 @@ const show = async (hootId) => {
   }
 }
 
-const create = async (hootFormData) => {
+const create = async (postFormData) => {
   try {
     const res = await fetch(BASE_URL, {
       method: 'POST',
@@ -30,7 +30,7 @@ const create = async (hootFormData) => {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(hootFormData),
+      body: JSON.stringify(postFormData),
     })
     return res.json()
   } catch (error) {
