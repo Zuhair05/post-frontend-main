@@ -6,10 +6,10 @@ import { useState, useEffect } from "react"
 import SignInForm from "./pages/SignInForm"
 import Landing from "./pages/Landing"
 import Dashboard from "./pages/Dashboard"
-import HootList from "./pages/HootList"
-import * as hootService from './services/hoots'
-import HootDetails from "./pages/HootDetails"
-import HootForm from "./pages/HootForm"
+import HootList from "./pages/PostList"
+import * as hootService from './services/posts'
+import HootDetails from "./pages/PostDetails"
+import HootForm from "./pages/PostForm"
 
 
 const getUserFromToken = () => {
@@ -46,9 +46,9 @@ const App = () => {
         <Route path='/' element={user ? <Dashboard user={user} /> : <Landing />} />
         {user ? (
           <>
-            <Route path='/hoots' element={<HootList hoots={hoots} />} />
-            <Route path='/hoots/:hootId' element={<HootDetails user={user} />} />
-            <Route path='/hoots/new' element={<HootForm handleAddHoot={handleAddHoot} />} />
+            <Route path='/posts' element={<HootList hoots={hoots} />} />
+            <Route path='/posts/:postId' element={<HootDetails user={user} />} />
+            <Route path='/posts/new' element={<HootForm handleAddHoot={handleAddHoot} />} />
           </>
         ) : (
           <>

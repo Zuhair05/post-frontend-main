@@ -1,11 +1,14 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router'
 
-const HootForm = (props) => {
+const PostForm = (props) => {
+
+  const navigate = useNavigate()
 
     const initialState = {
         title: '',
         text: '',
-        category: 'News',
+        image: '',
     }
     const [formData, setFormData] = useState(initialState)
 
@@ -14,7 +17,10 @@ const HootForm = (props) => {
   }
 
   const handleSubmit = (evt) => {
+        evt.preventDefault()
         props.handleAddHoot(formData)
+        setFormData(initialState)
+        navigate('/posts')
   }
 
 
@@ -39,26 +45,17 @@ const HootForm = (props) => {
           value={formData.text}
           onChange={handleChange}
         />
-        <label htmlFor='category-input'>Category</label>
-        <select
-          required
-          name='category'
-          id='category-input'
-          value={formData.category}
+        <lable htmlFor='image-input'>Image</lable>
+        <input
+        id="image"
+          name='image'
+          value={formData.image}
           onChange={handleChange}
-        >
-          <option value='News'>News</option>
-          <option value='Sports'>Sports</option>
-          <option value='Games'>Games</option>
-          <option value='Movies'>Movies</option>
-          <option value='Music'>Music</option>
-          <option value='Television'>Television</option>
-          <option value='Other'>Other</option>
-        </select>
+        />
         <button type='submit'>SUBMIT</button>
       </form>
     </main>
   )
 }
 
-export default HootForm
+export default PostForm
