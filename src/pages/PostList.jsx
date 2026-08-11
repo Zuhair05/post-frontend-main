@@ -1,6 +1,8 @@
 import { Link } from "react-router"
 
 const PostList = (props) => {
+
+  console.log(props.posts)
   return (
     <main className="post-list">
       {props.posts.map((post) => (

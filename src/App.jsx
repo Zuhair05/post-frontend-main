@@ -6,10 +6,10 @@ import { useState, useEffect } from "react"
 import SignInForm from "./pages/SignInForm"
 import Landing from "./pages/Landing"
 import Dashboard from "./pages/Dashboard"
-import HootList from "./pages/PostList"
-import * as hootService from './services/posts'
-import HootDetails from "./pages/PostDetails"
-import HootForm from "./pages/PostForm"
+import PostList from "./pages/PostList"
+import * as postService from './services/posts'
+import PostDetails from "./pages/PostDetails"
+import PostForm from "./pages/PostForm"
 
 
 const getUserFromToken = () => {
@@ -26,14 +26,14 @@ const App = () => {
 
   useEffect(() => {
     const fetchAllPosts = async () => {
-      const postsData = await hootService.index()
+      const postsData = await postService.index()
       setPosts(postsData)
     }
     if (user) fetchAllPosts()
   }, [user])
 
   const handleAddPost = async (formData) => {
-    const newPost = await hootService.create(formData)
+    const newPost = await postService.create(formData)
     setPosts([newPost, ...posts])
     navigate('/posts')
   }
@@ -46,9 +46,9 @@ const App = () => {
         <Route path='/' element={user ? <Dashboard user={user} /> : <Landing />} />
         {user ? (
           <>
-            <Route path='/posts' element={<HootList posts={posts} />} />
-            <Route path='/posts/:postId' element={<HootDetails user={user} />} />
-            <Route path='/posts/new' element={<HootForm handleAddPost={handleAddPost} />} />
+            <Route path='/posts' element={<PostList posts={posts} />} />
+            <Route path='/posts/:postId' element={<PostDetails user={user} />} />
+            <Route path='/posts/new' element={<PostForm handleAddPost={handleAddPost} />} />
           </>
         ) : (
           <>
