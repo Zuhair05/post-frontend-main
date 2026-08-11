@@ -1,5 +1,5 @@
 import { useParams } from "react-router"
-import * as postService from '../services/posts'
+import * as postServices from '../services/posts'
 import { useState, useEffect } from "react"
 
 const PostDetails = (props) => {
@@ -9,24 +9,48 @@ const PostDetails = (props) => {
 
     useEffect(() => {
         const fetchPost = async () => {
-            const postData = await postService.show(postId)
+            const postData = await postServices.show(postId)
             setPost(postData)
         }
+
         fetchPost()
     }, [postId])
 
-
-    if (!post) return <main><div className="loader"></div></main>
+    if (!post) {
+        return <main><div className="loader"></div></main>
+    }
 
     return (
-        <article className="card post-card">
-            <header className="post-header">
+        <article className="card hoot-card">
+            <header className="hoot-header">
+                <div>
+                    {post.image && <img src={post.image} alt={post.title} />}
+                </div>
                 <h2>{post.title}</h2>
-                <p className="post-author">Posted by {post.author?.username || 'Unknown user'} on <span>{new Date(post.createdAt).toLocaleDateString()}</span></p>
+
+                <p className="hoot-author">
+                    Posted by {post.author?.username || 'Unknown user'} on{" "}
+                    <span>
+                        {new Date(post.createdAt).toLocaleDateString()}
+                    </span>
+                </p>
             </header>
-            <p className="post-text">{post.text}</p>
-            <footer className="post-footer">
-              {/* comments go here */}
+
+            <p className="hoot-text">
+                {post.text}
+            </p>
+
+            {props.user && props.user._id === post.author?._id && (
+                <button onClick={() => props.handleUpdate(post._id)}>Edit</button>
+            )}
+
+            {props.user && props.user._id === post.author?._id && (
+                <button onClick={() => props.handleDelete(post._id)}>Delete</button>
+            )}
+           
+
+            <footer className="hoot-footer">
+                {/* comments go here */}
             </footer>
         </article>
     )

@@ -7,11 +7,9 @@ import SignInForm from "./pages/SignInForm"
 import Landing from "./pages/Landing"
 import Dashboard from "./pages/Dashboard"
 import PostList from "./pages/PostList"
-import * as postService from './services/posts'
-import * as commentService from './services/comments'
+import * as postServices from './services/posts'
 import PostDetails from "./pages/PostDetails"
 import PostForm from "./pages/PostForm"
-import Comments from "./components/Comments"
 
 
 const getUserFromToken = () => {
@@ -25,38 +23,34 @@ const App = () => {
 
   const [user, setUser] = useState(getUserFromToken())
   const [posts, setPosts] = useState([])
-  const [comments,setComments] = useState([])
-  const [postId, setPostId] = useState(null)
-  const [showComments, setShowComments] = useState(false)
-
 
   useEffect(() => {
     const fetchAllPosts = async () => {
-      const postsData = await postService.index()
+      const postsData = await postServices.index()
       setPosts(postsData)
     }
     if (user) fetchAllPosts()
   }, [user])
 
   const handleAddPost = async (formData) => {
-    const newPost = await postService.create(formData)
+    const newPost = await postServices.create(formData)
     setPosts([newPost, ...posts])
     navigate('/posts')
   }
-
-  const openComments = async (postId) => {
-    const data = await commentService.index(postId)
-    setComments(data)
-    setShowComments(true)
-    setPostId(postId)
-  }
-
-  const closeComments = () => {
-    setShowComments(false)
-    setPostId(null)
-  }
-    
   
+  const handleDelete = async (postId) => {
+    await postServices.deletePost(postId)
+    setPosts(posts.filter((post) => post._id !== postId))
+    navigate('/posts')
+  }
+
+  const handleUpdate = async (postId, formData) => {
+    const updatedPost = await postServices.update(postId, formData)
+    setPosts(posts.map((post) => (post._id === postId ? updatedPost : post)))
+    navigate(`/posts/${postId}`)
+  }
+
+
   return (
     <div>
       <Nav user={user} setUser={setUser} />
@@ -65,8 +59,8 @@ const App = () => {
         <Route path='/' element={user ? <Dashboard user={user} /> : <Landing />} />
         {user ? (
           <>
-            <Route path='/posts' element={<PostList posts={posts} openComments={openComments} />} />
-            <Route path='/posts/:postId' element={<PostDetails user={user} />} />
+            <Route path='/posts' element={<PostList posts={posts}  />} />
+            <Route path='/posts/:postId' element={<PostDetails user={user} handleDelete={handleDelete} />} />
             <Route path='/posts/new' element={<PostForm handleAddPost={handleAddPost} />} />
           </>
         ) : (
@@ -76,7 +70,6 @@ const App = () => {
           </>
         )}
       </Routes>
-      {showComments && <Comments postId={postId} comments={comments} closeComments={closeComments} />}
       </main>
     </div>
   )

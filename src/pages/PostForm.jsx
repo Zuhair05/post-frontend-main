@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import * as postService from '../services/posts'
+import { useEffect } from 'react'
 
 const PostForm = (props) => {
 
@@ -12,6 +14,16 @@ const PostForm = (props) => {
     }
     const [formData, setFormData] = useState(initialState)
 
+    useEffect(() => {
+       const fetchPost = async () => {
+        const postData = await postService.show(props.postId)
+        setFormData(postData)
+       }
+       if (props.postId) fetchPost()
+
+        return () => setFormData(initialState)
+    }, [props.postId])
+
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
@@ -22,6 +34,8 @@ const PostForm = (props) => {
         setFormData(initialState)
         navigate('/posts')
   }
+
+  
 
 
   return (
