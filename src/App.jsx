@@ -8,8 +8,10 @@ import Landing from "./pages/Landing"
 import Dashboard from "./pages/Dashboard"
 import PostList from "./pages/PostList"
 import * as postService from './services/posts'
+import * as commentService from './services/comments'
 import PostDetails from "./pages/PostDetails"
 import PostForm from "./pages/PostForm"
+import Comments from "./components/Comments"
 
 
 const getUserFromToken = () => {
@@ -43,7 +45,10 @@ const App = () => {
   }
 
   const openComments = async (postId) => {
-    const 
+    const data = await commentService.index(postId)
+    setComments(data)
+    setShowComments(true)
+    setPostId(postId)
   }
 
   const closeComments = () => {
@@ -60,7 +65,7 @@ const App = () => {
         <Route path='/' element={user ? <Dashboard user={user} /> : <Landing />} />
         {user ? (
           <>
-            <Route path='/posts' element={<PostList posts={posts} />} />
+            <Route path='/posts' element={<PostList posts={posts} openComments={openComments} />} />
             <Route path='/posts/:postId' element={<PostDetails user={user} />} />
             <Route path='/posts/new' element={<PostForm handleAddPost={handleAddPost} />} />
           </>
@@ -71,6 +76,7 @@ const App = () => {
           </>
         )}
       </Routes>
+      {showComments && <Comments postId={postId} comments={comments} closeComments={closeComments} />}
       </main>
     </div>
   )
