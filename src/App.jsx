@@ -23,6 +23,10 @@ const App = () => {
 
   const [user, setUser] = useState(getUserFromToken())
   const [posts, setPosts] = useState([])
+  const [comments,setComments] = useState([])
+  const [postId, setPostId] = useState(null)
+  const [showComments, setShowComments] = useState(false)
+
 
   useEffect(() => {
     const fetchAllPosts = async () => {
@@ -37,6 +41,16 @@ const App = () => {
     setPosts([newPost, ...posts])
     navigate('/posts')
   }
+
+  const openComments = async (postId) => {
+    const 
+  }
+
+  const closeComments = () => {
+    setShowComments(false)
+    setPostId(null)
+  }
+    
   
   return (
     <div>
