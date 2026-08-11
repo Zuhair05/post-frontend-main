@@ -1,11 +1,17 @@
 import { useParams } from "react-router"
 import * as postServices from '../services/posts'
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router"
+import Comments from "../components/Comments"
+import * as commentService from "../services/comments"
 
 const PostDetails = (props) => {
     const { postId } = useParams()
+    const navigate = useNavigate()
 
     const [post, setPost] = useState(null)
+    const [comments, setComments] = useState([])
+    const [showComments, setShowComments] = useState(false)
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -15,6 +21,16 @@ const PostDetails = (props) => {
 
         fetchPost()
     }, [postId])
+
+    const openComments = async () => {
+        const commentsData = await commentService.index(postId)
+        setComments(commentsData)
+        setShowComments(true)
+    }
+
+    const closeComments = () => {
+        setShowComments(false)
+    }
 
     if (!post) {
         return <main><div className="loader"></div></main>
@@ -39,10 +55,9 @@ const PostDetails = (props) => {
             <p className="hoot-text">
                 {post.text}
             </p>
-
-            {props.user && props.user._id === post.author?._id && (
-                <button onClick={() => props.handleUpdate(post._id)}>Edit</button>
-            )}
+            <button  onClick={showComments ? closeComments : openComments}>
+                 💬 Comments
+            </button>
 
             {props.user && props.user._id === post.author?._id && (
                 <button onClick={() => props.handleDelete(post._id)}>Delete</button>
@@ -52,6 +67,36 @@ const PostDetails = (props) => {
             <footer className="hoot-footer">
                 {/* comments go here */}
             </footer>
+          {showComments && (
+    <section className="comments">
+
+        <h2>Comments</h2>
+
+        {comments.length === 0 ? (
+            <p>No comments yet.</p>
+        ) : (
+            comments.map((comment) => (
+                <div
+                    className="comment"
+                    key={comment._id}
+                >
+                    <strong>
+                        {comment.author?.username || "Unknown user"}
+                    </strong>
+
+                    <p>{comment.text}</p>
+                </div>
+            ))
+        )}
+
+        <Comments
+            postId={postId}
+            comments={comments}
+            setComments={setComments}
+        />
+
+    </section>
+)}
         </article>
     )
 }

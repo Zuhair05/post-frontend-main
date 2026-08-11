@@ -23,6 +23,7 @@ const App = () => {
 
   const [user, setUser] = useState(getUserFromToken())
   const [posts, setPosts] = useState([])
+  
 
   useEffect(() => {
     const fetchAllPosts = async () => {
@@ -44,11 +45,21 @@ const App = () => {
     navigate('/posts')
   }
 
-  const handleUpdate = async (postId, formData) => {
-    const updatedPost = await postServices.update(postId, formData)
-    setPosts(posts.map((post) => (post._id === postId ? updatedPost : post)))
-    navigate(`/posts/${postId}`)
-  }
+  // const handleUpdate = async (postId, formData) => {
+  //   const updatedPost = await postServices.update(postId, formData)
+  //   setPosts(posts.map((post) => (post._id === postId ? updatedPost : post)))
+  //   navigate(`/posts/${postId}`)
+  // }
+
+  // const openComments = async (postId) => {
+  //   setSelectedPostId(postId)
+  //   setShowComments(true)
+  // }
+
+  // const closeComments = () => {
+  //   setSelectedPostId(null)
+  //   setShowComments(false)
+  // }
 
 
   return (
@@ -59,7 +70,7 @@ const App = () => {
         <Route path='/' element={user ? <Dashboard user={user} /> : <Landing />} />
         {user ? (
           <>
-            <Route path='/posts' element={<PostList posts={posts}  />} />
+            <Route path='/posts' element={<PostList posts={posts} />} />
             <Route path='/posts/:postId' element={<PostDetails user={user} handleDelete={handleDelete} />} />
             <Route path='/posts/new' element={<PostForm handleAddPost={handleAddPost} />} />
           </>
