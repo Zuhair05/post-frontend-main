@@ -12,6 +12,8 @@ const PostDetails = (props) => {
     const [post, setPost] = useState(null)
     const [comments, setComments] = useState([])
     const [showComments, setShowComments] = useState(false)
+    const [editingCommentId, setEditingCommentId] = useState(null)
+    const [editText, setEditText] = useState("")
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -31,6 +33,42 @@ const PostDetails = (props) => {
     const closeComments = () => {
         setShowComments(false)
     }
+
+    const handleDeleteComment = async (commentId) => {
+        await commentService.deleteComment(postId, commentId)
+        setComments(comments.filter((comment) => comment._id !== commentId))
+    }
+
+
+    const handleEditClick = (comment) => {
+    setEditingCommentId(comment._id)
+    setEditText(comment.text)
+}
+
+const handleUpdateComment = async (commentId) => {
+    if (!editText.trim()) return
+
+    
+        const updatedComment = await commentService.update(
+            postId,
+            commentId,
+            editText.trim()
+        )
+
+        setComments((currentComments) =>
+            currentComments.map((comment) =>
+                comment._id === commentId
+                    ? {
+                        ...comment,
+                        ...updatedComment
+                    }
+                    : comment
+            )
+        )
+        setEditingCommentId(null)
+        setEditText("")
+
+}
 
     if (!post) {
         return <main><div className="loader"></div></main>
@@ -88,7 +126,26 @@ const PostDetails = (props) => {
                         {comment.author?.username || "Unknown user"}
                     </strong>
 
-                    <p>{comment.text}</p>
+                    {editingCommentId === comment._id ? (
+    <div className="edit-comment">
+
+        <input type="text" value={editText} onChange={(e) => setEditText(e.target.value)}/>
+
+        <button onClick={() => handleUpdateComment(comment._id)}>Save</button>
+        <button onClick={() => { setEditingCommentId(null), setEditText("")}} >Cancel </button>
+    </div>
+) : (
+    <>
+        <p>{comment.text}</p>
+
+        {props.user && props.user._id === comment.author?._id && (
+                <div className="comment-actions">
+                    <button onClick={() => handleEditClick(comment)}>Edit</button>
+                    <button onClick={() => handleDeleteComment(comment._id)}>Delete</button>
+                </div>
+            )}
+    </>
+)}
                 </div>
             ))
         )}
@@ -97,6 +154,7 @@ const PostDetails = (props) => {
             postId={postId}
             comments={comments}
             setComments={setComments}
+            user={props.user}
         />
 
     </section>
