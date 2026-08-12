@@ -7,12 +7,14 @@ const index = async (postId) => {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }
         })
+        const data = await res.json()
 
-        if (!res.ok) {
+
+        if (data.err) {
             throw new Error("Failed to fetch comments")
         }
 
-        return res.json()
+        return data
     } catch (error) {
         console.error("Error fetching comments:", error)
         throw error
@@ -32,12 +34,12 @@ const create = async (postId, text) => {
             })
         })
 
-        if (!res.ok) {
-            const error = await res.json()
-            throw new Error(error.err || "Failed to create comment")
+        const data = await res.json()
+        if (data.err) {
+            throw new Error(data.err || "Failed to create comment")
         }
 
-        return res.json()
+        return data
     } catch (error) {
         console.error("Error creating comment:", error)
         throw error
@@ -60,12 +62,12 @@ const update = async (postId, commentId, text) => {
             }
         )
 
-        if (!res.ok) {
-            const error = await res.json()
-            throw new Error(error.err || "Failed to update comment")
+        const data = await res.json()
+        if (data.err) {
+            throw new Error(data.err || "Failed to update comment")
         }
 
-        return res.json()
+        return data
     } catch (error) {
         console.error("Error updating comment:", error)
         throw error
@@ -84,12 +86,12 @@ const deleteComment = async (postId, commentId) => {
             }
         )
 
-        if (!res.ok) {
-            const error = await res.json()
-            throw new Error(error.err || "Failed to delete comment")
+        const data = await res.json()
+        if (data.err) {
+            throw new Error(data.err || "Failed to delete comment")
         }
 
-        return res.json()
+        return data
     } catch (error) {
         console.error("Error deleting comment:", error)
         throw error
