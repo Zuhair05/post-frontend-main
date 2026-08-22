@@ -1,16 +1,68 @@
-# React + Vite
+# Loop1y
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Hoots Screenshot](./public/Loop1y.png)
 
-Currently, two official plugins are available:
+## Description
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Loop1y is a social media application where users can create, view, edit, and delete posts and interact with other users through comments.
 
-## React Compiler
+The app was built as Project 3 to practice building a full-stack application with a React frontend and Django REST Framework backend. Users can create an account, sign in, create posts, update or delete their posts, and add, edit, or delete comments.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting Started
 
-## Expanding the ESLint configuration
+### Deployed App
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+[View the deployed Hoots app](https://loop1y.netlify.app/)
+
+### Planning Materials
+
+[Trello Planning Board](https://trello.com/b/rVYp2WLu/full-stack-crud-unit-3)
+
+### Back-End Repository
+
+[Hoots Back-End Repository](https://github.com/Zuhair05/express-social-media-app-back-end)
+
+## Technologies Used
+
+### Front-End
+
+- React
+- JavaScript
+- CSS
+- React Router
+
+### Back-End
+The backend for Loop1y is built using Node.js, Express, MongoDB, and Mongoose.
+
+### Development Tools
+
+- GitHub
+- Trello
+- Render
+
+## Features
+
+- User registration and authentication
+- User login and logout
+- Create posts
+- View posts
+- Edit posts
+- Delete posts
+- Add comments
+- Edit comments
+- Delete comments
+- View post details
+
+
+## Next Steps
+
+Future enhancements for Loop1y include:
+
+- User profile pages
+- Profile pictures
+- Like and unlike functionality
+- Follow and unfollow users
+- Image uploads for posts
+- Search functionality
+- Notifications
+- Improved mobile responsiveness
